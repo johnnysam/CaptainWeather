@@ -9,8 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="gr.uoa.di.siztramas.captainweather.MainActivity"
-            android:icon="@mipmap/ic_launcher">
+            android:name="gr.uoa.di.siztramas.captainweather.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

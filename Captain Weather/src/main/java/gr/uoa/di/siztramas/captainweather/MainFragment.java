@@ -4,9 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -18,6 +25,10 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class MainFragment extends Fragment {
+
+    private static final String TAG = "MAIN_FRAGMENT";
+    ArrayAdapter<String> mForecastAdapter;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,7 +41,7 @@ public class MainFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public MainFragment() {
-        // Required empty public constructor
+        Log.i(TAG, "MainFragment()");
     }
 
     /**
@@ -54,6 +65,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate()");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -63,8 +75,35 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+
+        Log.i(TAG, "onCreateView()");
+        // Create some dummy data for the ListView.  Here's a sample weekly forecast
+        String[] data = {
+                "Mon 6/23 - Sunny - 31/17",
+                "Tue 6/24 - Foggy - 21/8",
+                "Wed 6/25 - Cloudy - 22/17",
+                "Thurs 6/26 - Rainy - 18/11",
+                "Fri 6/27 - Foggy - 21/10",
+                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
+                "Sun 6/29 - Sunny - 20/7"
+        };
+        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
+
+        mForecastAdapter = new ArrayAdapter<String>(
+                getActivity(),                      // current activity context
+                R.layout.list_item_forecast,        // layout ID
+                R.id.list_item_forecast_textview,   // textview element ID
+                weekForecast);
+
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        // Get a reference to the ListView, and attach this adapter to it.
+        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        listView.setAdapter(mForecastAdapter);
+
+        Log.i(TAG, "ListView Adapter attached");
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -77,6 +116,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.i(TAG, "onAttach()");
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -85,8 +125,11 @@ public class MainFragment extends Fragment {
         }
     }
 
+
+
     @Override
     public void onDetach() {
+        Log.i(TAG, "onDetach()");
         super.onDetach();
         mListener = null;
     }
