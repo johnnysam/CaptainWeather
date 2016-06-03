@@ -67,7 +67,7 @@ public class ForecastFragment extends Fragment {
             Log.d(TAG, "Refresh pressed");
             // Executing the AsyncTask to get weather data from OWM
             GetForecastTask getForecastTask = new GetForecastTask();
-            getForecastTask.execute();
+            getForecastTask.execute("94043,us");
             return true;
         }
         return super.onOptionsItemSelected(item);
