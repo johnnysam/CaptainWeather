@@ -12,11 +12,11 @@
 
 
     <fragment
-        android:name="gr.uoa.di.siztramas.captainweather.MainFragment"
-        android:id="@+id/mainfragment"
+        android:name="gr.uoa.di.siztramas.captainweather.ForecastFragment"
+        android:id="@+id/forecastfragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_forecast" />
 
 
 </LinearLayout>

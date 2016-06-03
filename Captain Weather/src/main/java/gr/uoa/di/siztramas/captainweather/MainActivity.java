@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
-    private static final String TAG = "MAIN_ACTIVITY";
+public class MainActivity extends AppCompatActivity implements ForecastFragment.OnFragmentInteractionListener {
+    private final String TAG = "MAIN_ACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         super.onDestroy();
     }
 
-    //Its implementation was demanded by MainFragment's onAttach()
+    //Its implementation was demanded by ForecastFragment's onAttach()
     @Override
     public void onFragmentInteraction(Uri uri) {
         Log.d(TAG, "onFragmentInteraction");
