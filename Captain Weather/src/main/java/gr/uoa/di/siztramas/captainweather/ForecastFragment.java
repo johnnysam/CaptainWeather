@@ -64,6 +64,10 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
+            Log.d(TAG, "Refresh pressed");
+            // Executing the AsyncTask to get weather data from OWM
+            GetForecastTask getForecastTask = new GetForecastTask();
+            getForecastTask.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
