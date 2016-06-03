@@ -12,18 +12,18 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.i(TAG, "onCreate()");
+        Log.d(TAG, "onCreate()");
     }
 
     @Override
     protected void onDestroy() {
-        Log.i(TAG, "onDestroy()");
+        Log.d(TAG, "onDestroy()");
         super.onDestroy();
     }
 
     //Its implementation was demanded by MainFragment's onAttach()
     @Override
     public void onFragmentInteraction(Uri uri) {
-        Log.i(TAG, "onFragmentInteraction");
+        Log.d(TAG, "onFragmentInteraction");
     }
 }

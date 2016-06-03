@@ -41,7 +41,7 @@ public class MainFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public MainFragment() {
-        Log.i(TAG, "MainFragment()");
+        Log.d(TAG, "MainFragment()");
     }
 
     /**
@@ -65,7 +65,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate()");
+        Log.d(TAG, "onCreate()");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -76,7 +76,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.i(TAG, "onCreateView()");
+        Log.d(TAG, "onCreateView()");
         // Create some dummy data for the ListView.  Here's a sample weekly forecast
         String[] data = {
                 "Mon 6/23 - Sunny - 31/17",
@@ -101,7 +101,7 @@ public class MainFragment extends Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
 
-        Log.i(TAG, "ListView Adapter attached");
+        Log.d(TAG, "ListView Adapter attached");
 
         return rootView;
     }
@@ -116,7 +116,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.i(TAG, "onAttach()");
+        Log.d(TAG, "onAttach()");
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -129,7 +129,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        Log.i(TAG, "onDetach()");
+        Log.d(TAG, "onDetach()");
         super.onDetach();
         mListener = null;
     }
