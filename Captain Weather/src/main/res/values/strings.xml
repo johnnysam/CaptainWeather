@@ -12,9 +12,9 @@
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
+    <string name="pref_title_auto_location">Enable automatic location</string>
+    <string name="pref_description_auto_location">Automatic location detects your current
+        localization from GPS
     </string>
 
     <string name="pref_title_display_name">Display name</string>
@@ -64,4 +64,8 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="pref_location_label">Location</string>
+    <string name="pref_location_key" translatable="false">location</string>
+    <string name="pref_location_default" translatable="false">60-856</string>
+    <string name="auto_location_key">auto_location</string>
 </resources>

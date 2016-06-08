@@ -2,9 +2,11 @@ package gr.uoa.di.siztramas.captainweather;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -30,8 +32,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -81,36 +81,26 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             Log.d(TAG, "Refresh pressed");
-            // Executing the AsyncTask to get weather data from OWM
-            GetForecastTask getForecastTask = new GetForecastTask();
-            getForecastTask.execute("60-856");
+            updateForecastData();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         Log.d(TAG, "onCreateView()");
-        // Create some dummy data for the ListView.  Here's a sample weekly forecast
-        String[] data = {
-                "Mon 6/23 - Sunny - 31/17",
-                "Tue 6/24 - Foggy - 21/8",
-                "Wed 6/25 - Cloudy - 22/17",
-                "Thurs 6/26 - Rainy - 18/11",
-                "Fri 6/27 - Foggy - 21/10",
-                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-                "Sun 6/29 - Sunny - 20/7"
-        };
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
 
+        // Creating an adapter with an empty array list. To be populated with updateForecastData()
         mForecastAdapter = new ArrayAdapter<String>(
                 getActivity(),                      // current activity context
                 R.layout.list_item_forecast,        // layout ID
                 R.id.list_item_forecast_textview,   // textview element ID
-                weekForecast);
+                new ArrayList<String>());
+
 
         View rootView = inflater.inflate(R.layout.fragment_forecast, container, false);
 
@@ -127,9 +117,16 @@ public class ForecastFragment extends Fragment {
                 startActivity(detailIntent);
             }
         });
+
         return rootView;
     }
 
+    @Override
+    public void onStart() {
+        Log.d(TAG, "onStart()");
+        super.onStart();
+        updateForecastData();
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -164,6 +161,19 @@ public class ForecastFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void updateForecastData() {
+        // To update with real forecast data when app first runs
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String postalCode = sharedPref.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+
+        Log.d(TAG, "Updating weather with postal code: " + postalCode);
+
+        // Executing the AsyncTask to get weather data from OWM
+        GetForecastTask getForecastTask = new GetForecastTask();
+        getForecastTask.execute(postalCode);
     }
 
     public class GetForecastTask extends AsyncTask<String, Void, String[]> {
