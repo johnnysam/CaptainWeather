@@ -8,17 +8,6 @@
         android:summary="@string/pref_description_auto_location"
         android:title="@string/pref_title_auto_location" />
 
-    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-    <EditTextPreference
-        android:capitalize="words"
-        android:defaultValue="@string/pref_default_display_name"
-        android:inputType="textCapWords"
-        android:key="example_text"
-        android:maxLines="1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="@string/pref_title_display_name" />
 
     <EditTextPreference
         android:title="@string/pref_location_label"
@@ -26,6 +15,15 @@
         android:defaultValue="@string/pref_location_default"
         android:inputType="text"
         android:singleLine="true" />
+
+    <ListPreference
+        android:title="@string/pref_unit_system"
+        android:key="@string/pref_unit_system_key"
+        android:entries="@array/pref_unit_system_entries"
+        android:entryValues="@array/pref_unit_system_values"
+        android:defaultValue="@string/pref_unit_system_default"
+
+        />
 
 
 </PreferenceScreen>

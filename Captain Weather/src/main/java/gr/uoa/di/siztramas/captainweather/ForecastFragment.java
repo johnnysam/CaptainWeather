@@ -56,6 +56,7 @@ public class ForecastFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment ForecastFragment.
      */
     public static ForecastFragment newInstance() {
@@ -153,7 +154,7 @@ public class ForecastFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -164,6 +165,8 @@ public class ForecastFragment extends Fragment {
     }
 
     private void updateForecastData() {
+
+        //TODO If enabled get user rough location from GPS automatically
         // To update with real forecast data when app first runs
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String postalCode = sharedPref.getString(getString(R.string.pref_location_key),
@@ -181,7 +184,7 @@ public class ForecastFragment extends Fragment {
         private final String TAG = "GET_FORECAST_TASK";
 
         @Override
-        protected String[] doInBackground(String... params){
+        protected String[] doInBackground(String... params) {
             Log.d(TAG, "doInBackground started");
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
@@ -196,7 +199,10 @@ public class ForecastFragment extends Fragment {
             String units = "metric";
             int numDays = 7;
 
-            String[] weatherData = new String[numDays];;
+
+
+            String[] weatherData = new String[numDays];
+            ;
 
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -290,7 +296,7 @@ public class ForecastFragment extends Fragment {
         /* The date/time conversion code is going to be moved outside the asynctask later,
                 * so for convenience we're breaking it out into its own method now.
                 */
-        private String getReadableDateString(long time){
+        private String getReadableDateString(long time) {
             // Because the API returns a unix timestamp (measured in seconds),
             // it must be converted to milliseconds in order to be converted to valid date.
             SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
@@ -300,7 +306,13 @@ public class ForecastFragment extends Fragment {
         /**
          * Prepare the weather high/lows for presentation.
          */
-        private String formatHighLows(double high, double low) {
+        private String formatHighLows(double high, double low, String unitType) {
+            // If chosen convert to imperial
+            if (unitType.equals(getString(R.string.pref_unit_system_imperial))) {
+                high = (high * 1.8) + 32;
+                low = (low * 1.8) + 32;
+            }
+
             // For presentation, assume the user doesn't care about tenths of a degree.
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);
@@ -312,7 +324,7 @@ public class ForecastFragment extends Fragment {
         /**
          * Take the String representing the complete forecast in JSON Format and
          * pull out the data we need to construct the Strings needed for the wireframes.
-         *
+         * <p/>
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
@@ -348,8 +360,19 @@ public class ForecastFragment extends Fragment {
             // now we work exclusively in UTC
             dayTime = new Time();
 
+            // Data is fetched in Celsius by default.
+            // If user prefers to see in Fahrenheit, convert the values here.
+            // We do this rather than fetching in Fahrenheit so that the user can
+            // change this option without us having to re-fetch the data once
+            // we start storing the values in a database.
+            SharedPreferences sharedPrefs =
+                    PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String unitType = sharedPrefs.getString(
+                    getString(R.string.pref_unit_system_key),
+                    getString(R.string.pref_unit_system_metric));
+
             String[] resultStrs = new String[numDays];
-            for(int i = 0; i < weatherArray.length(); i++) {
+            for (int i = 0; i < weatherArray.length(); i++) {
                 // For now, using the format "Day, description, hi/low"
                 String day;
                 String description;
@@ -363,7 +386,7 @@ public class ForecastFragment extends Fragment {
                 // "this saturday".
                 long dateTime;
                 // Cheating to convert this to UTC time, which is what we want anyhow
-                dateTime = dayTime.setJulianDay(julianStartDay+i);
+                dateTime = dayTime.setJulianDay(julianStartDay + i);
                 day = getReadableDateString(dateTime);
 
                 // description is in a child array called "weather", which is 1 element long.
@@ -376,7 +399,7 @@ public class ForecastFragment extends Fragment {
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
 
-                highAndLow = formatHighLows(high, low);
+                highAndLow = formatHighLows(high, low, unitType);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
